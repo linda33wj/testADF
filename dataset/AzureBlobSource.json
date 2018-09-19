@@ -1,0 +1,32 @@
+{
+	"name": "AzureBlobSource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileFilter": {
+				"type": "String"
+			}
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": {
+				"value": "@dataset().fileFilter",
+				"type": "Expression"
+			},
+			"folderPath": "testdata"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

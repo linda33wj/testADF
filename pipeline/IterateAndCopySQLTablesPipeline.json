@@ -1,0 +1,106 @@
+{
+	"name": "IterateAndCopySQLTablesPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "IterateTables",
+				"type": "ForEach",
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.tableList",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "CopyData",
+							"type": "Copy",
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"typeProperties": {
+								"source": {
+									"type": "SqlSource",
+									"sqlReaderQuery": {
+										"value": "SELECT * FROM [@{item().TABLE_SCHEMA}].[@{item().TABLE_NAME}]",
+										"type": "Expression"
+									}
+								},
+								"sink": {
+									"type": "BlobSink"
+								},
+								"enableStaging": false,
+								"dataIntegrationUnits": 0
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureSqlTableTemplate",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureBlobTemplate",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableName": {
+											"value": "@{item().TABLE_NAME}",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"tableList": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "Customer"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "ProductDescription"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "Product"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "ProductModelProductDescription"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "ProductCategory"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "Address"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "CustomerAddress"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "SalesOrderDetail"
+					},
+					{
+						"TABLE_SCHEMA": "SalesLT",
+						"TABLE_NAME": "SalesOrderHeader"
+					}
+				]
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,23 @@
+{
+	"name": "ADLSGen2Sink_File",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSGen2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"path": {
+				"type": "String"
+			}
+		},
+		"type": "AzureBlobFSFile",
+		"typeProperties": {
+			"fileName": "",
+			"folderPath": {
+				"value": "fromfilesource/@{dataset().path}",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,6 @@
+{
+	"name": "DemoIR-Desktop",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

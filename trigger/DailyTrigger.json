@@ -1,0 +1,27 @@
+{
+	"name": "DailyTrigger",
+	"properties": {
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "IncrementalCopyAndAnalysis",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"WindowStart": "@trigger().outputs.windowStartTime"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Hour",
+			"interval": 24,
+			"startTime": "2016-01-01T00:00:00Z",
+			"endTime": "2016-01-08T00:00:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			}
+		}
+	}
+}

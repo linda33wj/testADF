@@ -1,0 +1,144 @@
+{
+	"name": "IncrementalCopyAndAnalysis",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyFromSQL",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SqlSource",
+						"sqlReaderQuery": {
+							"value": "select * from [dbo].[NYTaxiTripData] where [lpep_pickup_datetime] >= '@{formatDateTime(pipeline().parameters.WindowStart, 'yyyy/MM/dd')}' and [lpep_pickup_datetime] < '@{formatDateTime(adddays(pipeline().parameters.WindowStart, 1), 'yyyy/MM/dd')}'",
+							"type": "Expression"
+						}
+					},
+					"sink": {
+						"type": "AzureBlobFSSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureSqlTableTemplate",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ADLSGen2Sink_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"path": {
+								"value": "input/@{formatDateTime(pipeline().parameters.WindowStart, 'yyyy/MM/dd')}",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "DataAnalaysis",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "CopyFromSQL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "CopyFromFile",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"notebookPath": "/Users/jingwang@microsoft.com/ADF-ADLSGen2-DemoNotebook",
+					"baseParameters": {
+						"inputPath": {
+							"value": "input/@{formatDateTime(pipeline().parameters.WindowStart, 'yyyy/MM/dd')}",
+							"type": "Expression"
+						},
+						"outputPath": {
+							"value": "output/@{formatDateTime(pipeline().parameters.WindowStart, 'yyyy/MM/dd')}",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "CopyFromFile",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "AzureBlobFSSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureBlobSource",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileFilter": {
+								"value": "@{formatDateTime(pipeline().parameters.WindowStart, '*yyyy-MM-dd*')}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ADLSGen2Sink_File",
+						"type": "DatasetReference",
+						"parameters": {
+							"path": {
+								"value": "input/@{formatDateTime(pipeline().parameters.WindowStart, 'yyyy/MM/dd')}",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"WindowStart": {
+				"type": "String"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

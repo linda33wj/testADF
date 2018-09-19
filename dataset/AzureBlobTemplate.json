@@ -1,0 +1,32 @@
+{
+	"name": "AzureBlobTemplate",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tableName": {
+				"type": "String"
+			}
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": {
+				"value": "@{dataset().tableName}.csv",
+				"type": "Expression"
+			},
+			"folderPath": "copyfromsql"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
