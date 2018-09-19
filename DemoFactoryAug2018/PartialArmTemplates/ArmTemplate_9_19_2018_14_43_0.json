@@ -6,82 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory Name",
 			"defaultValue": "DemoFactoryAug2018"
-		},
-		"ADLSGen2_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'ADLSGen2'"
-		},
-		"AzureBlobStorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage'"
-		},
-		"AzureDatabricks_accessToken": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks'"
-		},
-		"AzureSqlDatabase_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase'"
-		},
-		"ADLSGen2Sink_File_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": ""
-		},
-		"ADLSGen2Sink_File_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "fromfilesource/@{dataset().path}"
-		},
-		"ADLSGen2Sink_SQL_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "nytaxidata/@{dataset().path}"
-		},
-		"AzureBlobSource_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@dataset().fileFilter"
-		},
-		"AzureBlobSource_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "testdata"
-		},
-		"AzureBlobTemplate_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@{dataset().tableName}.csv"
-		},
-		"AzureBlobTemplate_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "copyfromsql"
-		},
-		"testGit_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": ""
-		},
-		"testGit_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "testgit"
-		},
-		"ADLSGen1_properties_typeProperties_dataLakeStoreUri": {
-			"type": "string",
-			"defaultValue": "https://datalakestorefordemo.azuredatalakestore.net/webhdfs/v1"
-		},
-		"ADLSGen1_properties_typeProperties_tenant": {
-			"type": "string",
-			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
-		},
-		"ADLSGen1_properties_typeProperties_subscriptionId": {
-			"type": "string",
-			"defaultValue": "7b68d2b5-dfbe-46e1-938f-98ed143b7953"
-		},
-		"ADLSGen1_properties_typeProperties_resourceGroupName": {
-			"type": "string",
-			"defaultValue": "demo"
-		},
-		"ADLSGen2_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://adlsgen2demostorage.dfs.core.windows.net"
-		},
-		"DailyTrigger_properties_pipeline_parameters_WindowStart": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.windowStartTime"
 		}
 	},
 	"variables": {
@@ -105,7 +29,6 @@
 								]
 							}
 						],
-						"userProperties": [],
 						"typeProperties": {
 							"items": {
 								"value": "@activity('LookupTableList').output.value",
@@ -115,7 +38,6 @@
 								{
 									"name": "CopyData",
 									"type": "Copy",
-									"dependsOn": [],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -123,7 +45,6 @@
 										"secureOutput": false,
 										"secureInput": false
 									},
-									"userProperties": [],
 									"typeProperties": {
 										"source": {
 											"type": "SqlSource",
@@ -141,8 +62,7 @@
 									"inputs": [
 										{
 											"referenceName": "AzureSqlTableTemplate",
-											"type": "DatasetReference",
-											"parameters": {}
+											"type": "DatasetReference"
 										}
 									],
 									"outputs": [
@@ -164,7 +84,6 @@
 					{
 						"name": "LookupTableList",
 						"type": "Lookup",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -172,7 +91,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
@@ -180,14 +98,12 @@
 							},
 							"dataset": {
 								"referenceName": "AzureSqlTableTemplate",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"firstRowOnly": false
 						}
 					}
-				],
-				"annotations": []
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTableTemplate')]",
@@ -203,7 +119,6 @@
 					{
 						"name": "LookupTableList",
 						"type": "Lookup",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -211,7 +126,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
@@ -219,8 +133,7 @@
 							},
 							"dataset": {
 								"referenceName": "AzureSqlTableTemplate",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"firstRowOnly": false
 						}
@@ -236,7 +149,6 @@
 								]
 							}
 						],
-						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "IterateAndCopySQLTablesPipeline",
@@ -251,8 +163,7 @@
 							}
 						}
 					}
-				],
-				"annotations": []
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTableTemplate')]",
@@ -268,7 +179,6 @@
 					{
 						"name": "CopyFromSQL",
 						"type": "Copy",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -276,7 +186,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "SqlSource",
@@ -294,8 +203,7 @@
 						"inputs": [
 							{
 								"referenceName": "AzureSqlTableTemplate",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -335,7 +243,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"notebookPath": "/Users/jingwang@microsoft.com/ADF-ADLSGen2-DemoNotebook",
 							"baseParameters": {
@@ -357,7 +264,6 @@
 					{
 						"name": "CopyFromFile",
 						"type": "Copy",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -365,7 +271,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "BlobSource",
@@ -407,13 +312,11 @@
 					"WindowStart": {
 						"type": "String"
 					}
-				},
-				"annotations": []
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTableTemplate')]",
 				"[concat(variables('factoryId'), '/datasets/ADLSGen2Sink_SQL')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks')]",
 				"[concat(variables('factoryId'), '/datasets/AzureBlobSource')]",
 				"[concat(variables('factoryId'), '/datasets/ADLSGen2Sink_File')]"
 			]
@@ -427,8 +330,6 @@
 					{
 						"name": "IterateTables",
 						"type": "ForEach",
-						"dependsOn": [],
-						"userProperties": [],
 						"typeProperties": {
 							"items": {
 								"value": "@pipeline().parameters.tableList",
@@ -438,7 +339,6 @@
 								{
 									"name": "CopyData",
 									"type": "Copy",
-									"dependsOn": [],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -446,7 +346,6 @@
 										"secureOutput": false,
 										"secureInput": false
 									},
-									"userProperties": [],
 									"typeProperties": {
 										"source": {
 											"type": "SqlSource",
@@ -464,8 +363,7 @@
 									"inputs": [
 										{
 											"referenceName": "AzureSqlTableTemplate",
-											"type": "DatasetReference",
-											"parameters": {}
+											"type": "DatasetReference"
 										}
 									],
 									"outputs": [
@@ -527,8 +425,7 @@
 							}
 						]
 					}
-				},
-				"annotations": []
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTableTemplate')]",
@@ -549,19 +446,15 @@
 						"type": "String"
 					}
 				},
-				"annotations": [],
 				"type": "AzureBlobFSFile",
 				"typeProperties": {
-					"fileName": "[parameters('ADLSGen2Sink_File_properties_typeProperties_fileName')]",
+					"fileName": "",
 					"folderPath": {
-						"value": "[parameters('ADLSGen2Sink_File_properties_typeProperties_folderPath')]",
+						"value": "fromfilesource/@{dataset().path}",
 						"type": "Expression"
 					}
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADLSGen2')]"
-			]
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ADLSGen2Sink_SQL')]",
@@ -577,7 +470,6 @@
 						"type": "String"
 					}
 				},
-				"annotations": [],
 				"type": "AzureBlobFSFile",
 				"typeProperties": {
 					"format": {
@@ -590,14 +482,11 @@
 						"firstRowAsHeader": true
 					},
 					"folderPath": {
-						"value": "[parameters('ADLSGen2Sink_SQL_properties_typeProperties_folderPath')]",
+						"value": "nytaxidata/@{dataset().path}",
 						"type": "Expression"
 					}
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADLSGen2')]"
-			]
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobSource')]",
@@ -613,7 +502,6 @@
 						"type": "String"
 					}
 				},
-				"annotations": [],
 				"type": "AzureBlob",
 				"typeProperties": {
 					"format": {
@@ -626,15 +514,12 @@
 						"firstRowAsHeader": false
 					},
 					"fileName": {
-						"value": "[parameters('AzureBlobSource_properties_typeProperties_fileName')]",
+						"value": "@dataset().fileFilter",
 						"type": "Expression"
 					},
-					"folderPath": "[parameters('AzureBlobSource_properties_typeProperties_folderPath')]"
+					"folderPath": "testdata"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage')]"
-			]
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobTemplate')]",
@@ -650,7 +535,6 @@
 						"type": "String"
 					}
 				},
-				"annotations": [],
 				"type": "AzureBlob",
 				"typeProperties": {
 					"format": {
@@ -663,15 +547,12 @@
 						"firstRowAsHeader": true
 					},
 					"fileName": {
-						"value": "[parameters('AzureBlobTemplate_properties_typeProperties_fileName')]",
+						"value": "@{dataset().tableName}.csv",
 						"type": "Expression"
 					},
-					"folderPath": "[parameters('AzureBlobTemplate_properties_typeProperties_folderPath')]"
+					"folderPath": "copyfromsql"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage')]"
-			]
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTableTemplate')]",
@@ -682,13 +563,8 @@
 					"referenceName": "AzureSqlDatabase",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"typeProperties": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
-			]
+				"type": "AzureSqlTable"
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/testGit')]",
@@ -699,7 +575,6 @@
 					"referenceName": "AzureBlobStorage",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
 				"type": "AzureBlob",
 				"typeProperties": {
 					"format": {
@@ -711,99 +586,16 @@
 						"skipLineCount": 0,
 						"firstRowAsHeader": false
 					},
-					"fileName": "[parameters('testGit_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('testGit_properties_typeProperties_folderPath')]"
+					"fileName": "",
+					"folderPath": "testgit"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ADLSGen1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDataLakeStore",
-				"typeProperties": {
-					"dataLakeStoreUri": "[parameters('ADLSGen1_properties_typeProperties_dataLakeStoreUri')]",
-					"tenant": "[parameters('ADLSGen1_properties_typeProperties_tenant')]",
-					"subscriptionId": "[parameters('ADLSGen1_properties_typeProperties_subscriptionId')]",
-					"resourceGroupName": "[parameters('ADLSGen1_properties_typeProperties_resourceGroupName')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ADLSGen2')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('ADLSGen2_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('ADLSGen2_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDatabricks')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDatabricks",
-				"typeProperties": {
-					"domain": "https://eastus.azuredatabricks.net",
-					"accessToken": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDatabricks_accessToken')]"
-					},
-					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "1:4",
-					"newClusterVersion": "4.3.x-scala2.11"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureSqlDatabase_connectionString')]"
-				}
-			},
-			"dependsOn": []
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DailyTrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
 				"runtimeState": "Started",
 				"pipeline": {
 					"pipelineReference": {
@@ -811,7 +603,7 @@
 						"type": "PipelineReference"
 					},
 					"parameters": {
-						"WindowStart": "[parameters('DailyTrigger_properties_pipeline_parameters_WindowStart')]"
+						"WindowStart": "@trigger().outputs.windowStartTime"
 					}
 				},
 				"type": "TumblingWindowTrigger",
@@ -830,16 +622,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/IncrementalCopyAndAnalysis')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DemoIR-Desktop')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
 		}
 	]
 }

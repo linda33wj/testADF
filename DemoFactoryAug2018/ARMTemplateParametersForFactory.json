@@ -1,1 +1,66 @@
-{}
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "DemoFactoryAug2018"
+		},
+		"ADLSGen2_accountKey": {
+			"value": ""
+		},
+		"AzureBlobStorage_connectionString": {
+			"value": ""
+		},
+		"AzureDatabricks_accessToken": {
+			"value": ""
+		},
+		"AzureSqlDatabase_connectionString": {
+			"value": ""
+		},
+		"ADLSGen2Sink_File_properties_typeProperties_fileName": {
+			"value": ""
+		},
+		"ADLSGen2Sink_File_properties_typeProperties_folderPath": {
+			"value": "fromfilesource/@{dataset().path}"
+		},
+		"ADLSGen2Sink_SQL_properties_typeProperties_folderPath": {
+			"value": "nytaxidata/@{dataset().path}"
+		},
+		"AzureBlobSource_properties_typeProperties_fileName": {
+			"value": "@dataset().fileFilter"
+		},
+		"AzureBlobSource_properties_typeProperties_folderPath": {
+			"value": "testdata"
+		},
+		"AzureBlobTemplate_properties_typeProperties_fileName": {
+			"value": "@{dataset().tableName}.csv"
+		},
+		"AzureBlobTemplate_properties_typeProperties_folderPath": {
+			"value": "copyfromsql"
+		},
+		"testGit_properties_typeProperties_fileName": {
+			"value": ""
+		},
+		"testGit_properties_typeProperties_folderPath": {
+			"value": "testgit"
+		},
+		"ADLSGen1_properties_typeProperties_dataLakeStoreUri": {
+			"value": "https://datalakestorefordemo.azuredatalakestore.net/webhdfs/v1"
+		},
+		"ADLSGen1_properties_typeProperties_tenant": {
+			"value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"ADLSGen1_properties_typeProperties_subscriptionId": {
+			"value": "7b68d2b5-dfbe-46e1-938f-98ed143b7953"
+		},
+		"ADLSGen1_properties_typeProperties_resourceGroupName": {
+			"value": "demo"
+		},
+		"ADLSGen2_properties_typeProperties_url": {
+			"value": "https://adlsgen2demostorage.dfs.core.windows.net"
+		},
+		"DailyTrigger_properties_pipeline_parameters_WindowStart": {
+			"value": "@trigger().outputs.windowStartTime"
+		}
+	}
+}
