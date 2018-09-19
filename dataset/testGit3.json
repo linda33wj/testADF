@@ -1,5 +1,5 @@
 {
-	"name": "testGit2",
+	"name": "testGit3",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage",
