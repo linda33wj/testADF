@@ -1,0 +1,13 @@
+{
+	"name": "testpublish",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"folderPath": "abc"
+		}
+	}
+}
